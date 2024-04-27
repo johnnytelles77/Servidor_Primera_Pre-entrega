@@ -1,8 +1,6 @@
 import fs from "fs"
 
 
-let pathfile = "./src/data/products.json"  /// la ruta del json la ponemos en una variable 
-
 class ProductManager {
     constructor(path) {
         this.path = path
@@ -34,12 +32,12 @@ class ProductManager {
         }
 
         this.products.push(newProduct);  // agregar un nuevo producto al array 
-        await fs.promises.writeFile(pathfile, JSON.stringify(this.products));
+        await fs.promises.writeFile(this.path, JSON.stringify(this.products));
     }
 
     async getProducts(limit) {  // Muestra los productos del array
 
-        const productsJson = await fs.promises.readFile(pathfile, "utf8")
+        const productsJson = await fs.promises.readFile(this.path, "utf8")
         const products = JSON.parse(productsJson) || [];
 
         if(!limit) return products;
@@ -76,13 +74,13 @@ class ProductManager {
             ...products[index],
             ...dataProduct // Actualizar los datos del producto con los nuevos datos 
         };
-        await fs.promises.writeFile(pathfile, JSON.stringify(products)); // Escribir los productos actualizados de nuevo en el archivo
+        await fs.promises.writeFile(this.path, JSON.stringify(products)); // Escribir los productos actualizados de nuevo en el archivo
     }
     
     async deleteProduct(id) {
         const products = await this.getProducts(); // Obtener la lista actualizada de productos
         const updatedProducts = products.filter(product => product.id !== id); // Filtrar los productos para eliminar el producto con el ID proporcionado
-        await fs.promises.writeFile(pathfile, JSON.stringify(updatedProducts)); // Escribir la lista con los cambios actualizados
+        await fs.promises.writeFile(this.path, JSON.stringify(updatedProducts)); // Escribir la lista con los cambios actualizados
     }
     
 }

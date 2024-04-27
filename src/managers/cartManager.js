@@ -1,6 +1,5 @@
 import fs from "fs";
 
-const pathFile = "./src/data/carts.json";
 
 class CartManager {
   constructor(path) {
@@ -10,7 +9,7 @@ class CartManager {
 
   /// metodo para obtener los carriot desde el json 
   async getCarts() {
-    const cartsJson = await fs.promises.readFile(pathFile);
+    const cartsJson = await fs.promises.readFile(this.path);
     this.carts = JSON.parse(cartsJson) || [];
     return this.carts;
   }
@@ -25,7 +24,7 @@ class CartManager {
 
     this.carts.push(newCart); /// devuelve el carrito creado
 
-    await fs.promises.writeFile(pathFile, JSON.stringify(this.carts));
+    await fs.promises.writeFile(this.path, JSON.stringify(this.carts));
 
     return newCart; /// Devuelve un nuevo carrito
   }

@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+
 const router = Router();
 router.get("/", async (req, res) => {
   try {
@@ -12,13 +13,13 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/;pid", async (req, res) => {
+router.get("/:pid", async (req, res) => {
   try {
     const { pid } = req.params;
 
     const product = await productManager.getProductsById(parseInt(pid));
 
-    res.status(200), json(product);
+    res.status(200).json(product);
   } catch (error) {
     console.log(error);
   }
@@ -71,3 +72,5 @@ router.delete("/:pid", async (req,res) => {
 
 
 export default router;
+
+
