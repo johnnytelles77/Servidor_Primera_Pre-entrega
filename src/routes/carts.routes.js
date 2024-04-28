@@ -18,7 +18,7 @@ router.post("/", async (req, res) => {
 router.get("/:cid", async (req, res) => {
   try {
     const { cid } = req.params;
-    const cart = await CartManager.getCartById(); /// Devuelve el carrito
+    const cart = await CartManager.getCartById(cid); /// Devuelve el carrito
 
     res.status(201).json(cart);
   } catch (error) {
@@ -30,7 +30,7 @@ router.get("/:cid", async (req, res) => {
 router.post("/:cid/product/:pid", async (req, res) => {
     try {
       const {cid, pid} = req.params;
-      const cart = await CartManager.createCart(); /// Agregar producto al carrito
+      const cart = await CartManager.addProductToCart(cid, pid); /// Agregar producto al carrito
   
       res.status(201).json(cart);
     } catch (error) {

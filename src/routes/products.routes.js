@@ -1,7 +1,11 @@
 import { Router } from "express";
+import ProductManager from "../managers/product-manager.js";
 
 
 const router = Router();
+const productManager = new ProductManager("./src/data/products.json");
+
+
 router.get("/", async (req, res) => {
   try {
     const { limit } = req.query;
@@ -17,7 +21,7 @@ router.get("/:pid", async (req, res) => {
   try {
     const { pid } = req.params;
 
-    const product = await productManager.getProductsById(parseInt(pid));
+    const product = await productManager.getProductById(parseInt(pid));
 
     res.status(200).json(product);
   } catch (error) {
@@ -32,7 +36,7 @@ router.post("/", async (req,res) => {
         
         const product = req.body;
 
-        const newProduct = await productmanager.addProduct(product);
+        const newProduct = await productManager.addProduct(product);
 
         res.status(201).json(newProduct);
 
@@ -47,7 +51,7 @@ router.put("/:pid", async (req,res) => {
         const {pid} = req.params;       
         const product = req.body;
 
-        const updateProduct = await productmanager.updateProduct(pid, product);
+        const updateProduct = await productManager.updateProduct(pid, product);
 
         res.status(201).json(updateProduct);
 

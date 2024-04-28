@@ -14,6 +14,6 @@ app.use("/api", router);
 
 
 
-app.listen(8088, () => {
-  console.log("Servidor listo en puerto 8088");
+app.listen(8080, () => {
+  console.log("Servidor listo en puerto 8080");
 });
