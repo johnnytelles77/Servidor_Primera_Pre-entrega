@@ -32,14 +32,14 @@ class CartManager {
   async getCartById(cid) { /// Metodo para obtener carrito por ID
     await this.getCarts(); /// Obtiene los carrito existentes
 
-    const cart = this.carts.find((c) => c.id === cid); /// Busca carrito por ID 
+    const cart = this.carts.find((c) => c.id == cid); /// Busca carrito por ID 
 
     if (!cart) return `No se encuentra el carrito con el id ${cid}`; /// si no encuentra el carrito manda un mensaje
 
     return cart.products;  /// Devuelve los productos del carrito
   }
 
-  /// Gregar prodcuto al carrito
+  /// agregar producto al carrito
   async addProductToCart(cid, pid) {
     await this.getCarts();
 

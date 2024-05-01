@@ -1,9 +1,8 @@
 import fs from "fs"
 
-
 class ProductManager {
     constructor(path) {
-        this.path = path
+        this.path = path;
         this.products = [];
     }
 
@@ -16,8 +15,7 @@ class ProductManager {
             price,
             thumbnail,
             code,
-            stock,
-            status: true
+            stock
         };
 
         if (Object.values(newProduct).includes(undefined)) {  // Verifica que todos los campos tengan un valor 
