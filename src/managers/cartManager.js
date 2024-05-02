@@ -7,27 +7,48 @@ class CartManager {
     this.carts = []; /// array vacio para el carrito
   }
 
-  /// metodo para obtener los carriot desde el json 
+
   async getCarts() {
-    const cartsJson = await fs.promises.readFile(this.path);
-    this.carts = JSON.parse(cartsJson) || [];
-    return this.carts;
+    try {
+      const cartsJson = await fs.promises.readFile(this.path);
+      this.carts = JSON.parse(cartsJson) || [];
+      return this.carts;
+    } catch (error) {
+      console.error('Error al obtener los carritos:', error);
+      return []; // o manejar el error de otra manera según sea apropiado para tu aplicación
+    }
   }
+  
 
-  async createCart() { /// creando un carrito nuevo 
-    await this.getCarts();
+  async createCart(products) {
+    try {
+        await this.getCarts(); // Cargar los carritos existentes
 
-    const newCart = {
-      id: this.carts.length + 1, /// asigna un ID al carrito
-      products: [],
-    };
+        const newCart = {
+            id: this.carts.length + 1,
+            products: products || [],
+        };
 
-    this.carts.push(newCart); /// devuelve el carrito creado
+        this.carts.push(newCart); // Agregar el nuevo carrito a la lista de carritos
 
-    await fs.promises.writeFile(this.path, JSON.stringify(this.carts));
+        await fs.promises.writeFile(this.path, JSON.stringify(this.carts)); // Guardar la lista actualizada de carritos
 
-    return newCart; /// Devuelve un nuevo carrito
-  }
+        console.log("Tu nuevo carrito ha sido creado con éxito.");
+        
+        return newCart; // Devolver el nuevo carrito creado
+    } catch (error) {
+        console.error("Error al crear el carrito:", error);
+        throw error; // Re-lanzar el error para que pueda ser manejado externamente si es necesario
+    }
+}
+
+
+
+
+
+
+
+
 
   async getCartById(cid) { /// Metodo para obtener carrito por ID
     await this.getCarts(); /// Obtiene los carrito existentes

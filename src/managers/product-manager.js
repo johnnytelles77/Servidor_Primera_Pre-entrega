@@ -6,8 +6,8 @@ class ProductManager {
         this.products = [];
     }
 
-   async addProduct(product) {  // Key Products
-    const { title, description, price, thumbnail, code, stock } = product;
+    async addProduct(product) {
+        const { title, description, price, thumbnail, code, stock } = product;
         const newProduct = {
             id: this.products.length + 1,
             title,
@@ -15,23 +15,32 @@ class ProductManager {
             price,
             thumbnail,
             code,
-            stock
+            stock,
+            status: true
         };
-
-        if (Object.values(newProduct).includes(undefined)) {  // Verifica que todos los campos tengan un valor 
-            console.log("Todos los campos son obligatorios");  // Si algún valor es undefined, se muestra este mensaje en la consola
+    
+        if (Object.values(newProduct).includes(undefined)) {
+            console.log("Todos los campos son obligatorios");
             return;
         }
-
-        const productExist = this.products.find(product => product.code === code);  // Verificar si el producto ya existe en el array basado en el código
+    
+        const productExist = this.products.find(existingProduct => existingProduct.code === code);
         if (productExist) {
             console.log(`El producto ${title} con el código ${code} ya está en existencia`);
             return;
         }
-
-        this.products.push(newProduct);  // agregar un nuevo producto al array 
-        await fs.promises.writeFile(this.path, JSON.stringify(this.products));
+    
+        // Cargar la lista de productos existente desde el archivo
+        const existingProductsJson = await fs.promises.readFile(this.path, "utf8");
+        const existingProducts = JSON.parse(existingProductsJson) || [];
+    
+        // Agregar el nuevo producto a la lista existente de productos
+        existingProducts.push(newProduct);
+    
+        // Escribir la lista actualizada de productos en el archivo
+        await fs.promises.writeFile(this.path, JSON.stringify(existingProducts));
     }
+    
 
     async getProducts(limit) {  // Muestra los productos del array
 
